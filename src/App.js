@@ -33,7 +33,7 @@ function StatementPane() {
   return (
     <div className="App-statement-template">
       <h1>If statement</h1>
-      <ExpressionTemplate textToBeDisplayed={"This is a sample text"} />
+      <ExpressionTemplate />
     </div>
   );
 }
@@ -46,14 +46,10 @@ function ContextSensitivePane() {
   );
 }
 
-function ExpressionTemplate(props) {
-  const [text, setText] = useState(props.textToBeDisplayed);
+function ExpressionTemplate() {
   return (
     <div className="App-statement-template-editor">
       <h3>if expression</h3>
-      <input type = "text" value = {text} 
-               onChange = {(e) => setText(e.target.value)} />
-      <h4>{text}</h4>
     </div>
   );
 }
