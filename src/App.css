@@ -85,6 +85,41 @@
   border-color: #010611;
   border-radius: 20px;
   border-style: solid;
+  display: flex;
+}
+
+.App-expression-block {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 10%;
+  left: 7%;
+  height: fit-content;
+  width: fit-content;
+  color: #490cd6;
+}
+
+.App-expression-block-disabled {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 10%;
+  left: 5%;
+  height: fit-content;
+  width: fit-content;
+  color: rgba(12, 11, 11, 0.63);
+}
+
+button {
+  background-color: #637a68;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 10px;
+  margin-left: 20px;
+
 }
 
 h1 {
