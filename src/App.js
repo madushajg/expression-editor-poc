@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState } from "react";
 import './App.css';
 
 function App() {
@@ -33,7 +33,7 @@ function StatementPane() {
   return (
     <div className="App-statement-template">
       <h1>If statement</h1>
-      <ExpressionTemplate />
+      <ExpressionTemplate textToBeDisplayed={"This is a sample text"} />
     </div>
   );
 }
@@ -46,10 +46,14 @@ function ContextSensitivePane() {
   );
 }
 
-function ExpressionTemplate() {
+function ExpressionTemplate(props) {
+  const [text, setText] = useState(props.textToBeDisplayed);
   return (
     <div className="App-statement-template-editor">
       <h3>if expression</h3>
+      <input type = "text" value = {text} 
+               onChange = {(e) => setText(e.target.value)} />
+      <h4>{text}</h4>
     </div>
   );
 }
