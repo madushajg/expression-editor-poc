@@ -15,33 +15,98 @@ function LeftPane() {
     expression: [
       {
         name: "var1",
-        template: ["var1"]
+        template: ["var1"],
+        context: "variable"
       },
       {
         name: "var2",
-        template: ["var2"]
+        template: ["var2"],
+        context: "variable"
       },
       {
         name: "var3",
-        template: ["var3"]
+        template: ["var3"],
+        context: "variable"
       },
       {
         name: "comparison",
-        template: ["expression1", ">", "expression2"]
+        template: ["expression1", "==", "expression2"],
+        context: "comprisonExpression"
       },
       {
         name: "logical",
-        template: ["expression1", "==", "expression2"]
-      }]
+        template: ["expression1", "&&", "expression2"],
+        context: "logicalExpression"
+      }],
+    comprisonExpression: [
+      {
+        name: "var1",
+        template: ["var1"],
+        context: "variable"
+      },
+      {
+        name: "var2",
+        template: ["var2"],
+        context: "variable"
+      },
+      {
+        name: "var3",
+        template: ["var3"],
+        context: "variable"
+      },
+      {
+        name: "arithmatic",
+        template: ["expression1", ">", "expression2"],
+        context: "arithmaticExpression"
+      },
+      {
+        name: "string template",
+        template: ["string  `", "expression", "`"],
+        context: "stringTemplate"
+      }
+    ],
+    logicalExpression: [
+      {
+        name: "var1",
+        template: ["var1"],
+        context: "variable"
+      },
+      {
+        name: "arithmatic",
+        template: ["expression1", ">", "expression2"],
+        context: "arithmaticExpression"
+      },
+      {
+        name: "string template",
+        template: ["string  `", "expression", "`"],
+        context: "stringTemplate"
+      }
+    ],
+    stringTemplate: [
+      {
+        name: "string template",
+        template: ["string  `", "expression", "`"],
+        context: "stringTemplate"
+      }
+    ]
   };
-  const [expressionTemplate, setExpressionTemplate] = useState(["expression"]);
-  const [context, setContext] = useState("");
+  const [expressionTemplate, setExpressionTemplate] = useState({
+    template: ["expression"],
+    expressionContext: ""
+  });
   const [expressions, setExpressions] = useState({
     parentExpressions: [],
     activeExpression: ""
   });
-  // console.log(expressionMap.expression);
-  console.log(expressions.activeExpression);
+
+  const onClickSuggestion = (template, context) => {
+    setExpressionTemplate({
+      template: template,
+      expressionContext: context
+    });
+  };
+
+  console.log(expressions.parentExpressions);
 
   return (
     <div className="App-leftPane">
@@ -50,13 +115,12 @@ function LeftPane() {
         expressionHandler = {setExpressions}
         expressions = {expressions}
       />
-      {/* <ContextSensitivePane expressionHandler = {setExpression}/> */}
       <div className="App-context-sensitivePane">
       <h2 style={{color: "green"}}>Suggestions</h2>
-      {expressionMap[expressions.activeExpression?expressions.activeExpression:"expression"].map((e, index) => (
+      {expressionMap[expressionTemplate.expressionContext?expressionTemplate.expressionContext:"expression"].map((e, index) => (
         <button 
           key={index}
-          onClick={()=>setExpressionTemplate(e.template)}>
+          onClick={() => onClickSuggestion(e.template, e.context)}>
           {e.name}
         </button>
       ))}
@@ -88,27 +152,15 @@ function StatementPane(props) {
   );
 }
 
-// function ContextSensitivePane(props) {
-//   return (
-//     <div className="App-context-sensitivePane">
-//       <h2 style={{color: "green"}}>Suggestions</h2>
-//       <button value="var1" onClick={(e)=>props.expressionHandler([e.target.value])}>var1</button>
-//       <button value="var2" onClick={(e)=>props.expressionHandler([e.target.value])}>var2</button>
-//       <button value="var3" onClick={(e)=>props.expressionHandler([e.target.value])}>var3</button>
-//       <ComparisonButton exprs = {props.expressionHandler} />
-//       <LogicalButton exprs = {props.expressionHandler} />
-//     </div>
-//   );
-// }
-
 function ExpressionTemplate(props) {
-  const data = props.expressionTemplate
+  const data = props.expressionTemplate.template
   const onClickExpression = (parentExpression, name) => {
     props.expressionHandler({
       parentExpressions: [...props.expressions.parentExpressions, parentExpression],
       activeExpression: name
     });
   };
+  console.log(data);
 
   return (
     <div className="App-statement-template-editor">
@@ -125,22 +177,5 @@ function ExpressionTemplate(props) {
     </div>
   );
 }
-
-
-// function ComparisonButton (props) {
-//   const template = ["expression1", ">", "expression2"]
-
-//   return (
-//     <button onClick={()=>props.exprs(template)}>Comparison</button>
-//   )
-// }
-
-// function LogicalButton (props) {
-//   const template = ["expression1", "==", "expression2"]
-
-//   return (
-//     <button onClick={()=>props.exprs(template)}>Logical</button>
-//   )
-// }
 
 export default App;
