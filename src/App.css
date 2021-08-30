@@ -97,17 +97,40 @@
   height: fit-content;
   width: fit-content;
   color: #490cd6;
+  margin-left: 10px;
 }
 
 .App-expression-block-disabled {
   display: flex;
   flex-direction: column;
   position: relative;
-  top: 10%;
+  top: 15%;
   left: 5%;
   height: fit-content;
   width: fit-content;
   color: rgba(12, 11, 11, 0.63);
+}
+
+.App-expression-component {
+  position: relative;
+  left: 5%;
+  top: 10%;
+  background-color: #a3a7a8;
+  color: #490cd6;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 10px;
+  padding: unset;
+  height: 30px;
+  border-radius: unset;
+  border-style: solid;
+  border-color: #9b9fa0;
+}
+
+.App-expression-component:hover {
+  background-color: #a3a7a8;
+  color: #2f068f;
 }
 
 button {
@@ -119,7 +142,12 @@ button {
   font-size: 16px;
   border-radius: 10px;
   margin-left: 20px;
+  /* border-style: solid */
+}
 
+button:hover {
+  background-color: #48584b;
+  color: white;
 }
 
 h1 {
