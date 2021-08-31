@@ -2,6 +2,58 @@ import React, { useState } from "react";
 
 import './styles.css';
 
+interface Expression {
+  // type: "string" | "int" | "boolean"
+  expressionType: 
+    | Comparison
+    | TypeCheck
+    | Conditional
+    | StringLiteral
+}
+
+interface StringLiteral {
+  value: string
+}
+
+interface Comparison {
+  lhs: Expression
+  operator: ">" | "<"
+  rhs: Expression
+}
+
+interface TypeCheck {
+  lhs: Expression
+  operator: "is"
+  rhs: "string" | "int" | "float" | "boolean"
+}
+
+interface Conditional {
+  condition: Expression
+  trueExpr: Expression
+  falseExpr: Expression
+}
+
+const stLtExpr : StringLiteral = {
+  value: "someName"
+}
+
+const Expr : Expression = {
+  expressionType: stLtExpr
+}
+
+const compExpr : Comparison = {
+  lhs: Expr,
+  operator: "<",
+  rhs: Expr
+}
+
+
+const boolExpr : Expression = {
+  type: "boolean",
+  expressionType: compExpr
+}
+
+
 interface ExpressionType {
   kind: string,
   // type: BallerinaTypes,
@@ -16,140 +68,33 @@ interface ExpressionType {
 //     boolean:string
 // }
 
-const conditionalExpr: ExpressionType = {
-  kind: "ConditionalExpression",
+const conditionalExpression: ExpressionType = {
+  kind: "conditionalExpression",
   template: ["expression", "?", "expression", ":", "expression"], // conditional expr has two templates
   supportedExprs: [] // suggestions, in Ui we show the vars and functions
 }
-// enum ComparisonOperatorTypes {
-//     GREATER_THAN = ">",
-//     LESS_THAN = "<",
-//     EQUALITY = "==",
-//     NOT_EQUAL = "!=",
-//   }
-// const comparisonOperators = {
-//     operators : [">","<",]
-// }
 
-const comparisonExpr: ExpressionType = {
+const comparisonExpression: ExpressionType = {
   kind: "comparisonExpression",
   template: ["expression", "operator", "expression"], // how can we manage the operators
-  supportedExprs: [conditionalExpr]
+  supportedExprs: [conditionalExpression]
 }
 
-const logicalExpr: ExpressionType = {
+const logicalExpression: ExpressionType = {
   kind: "logicalExpression",
   template: ["expression", "operator", "expression"],
-  supportedExprs: [comparisonExpr],
+  supportedExprs: [comparisonExpression],
 }
 
-const ifElseExprType: ExpressionType = {
+const ifElseExpression: ExpressionType = {
   kind: "ifElseExpression",
   template: ["expression"],
-  supportedExprs: [comparisonExpr, logicalExpr],
+  supportedExprs: [comparisonExpression, logicalExpression],
   // recursive:true,
 }
 
 export function LeftPane() {
-  const [selectedExpressionType, setSelectedExpressionType] = React.useState(ifElseExprType)
-  // const expressionMap = {
-  //   expression: [
-  //     {
-  //       name: "var1",
-  //       template: ["var1"],
-  //       context: "variable"
-  //     },
-  //     {
-  //       name: "var2",
-  //       template: ["var2"],
-  //       context: "variable"
-  //     },
-  //     {
-  //       name: "var3",
-  //       template: ["var3"],
-  //       context: "variable"
-  //     },
-  //     {
-  //       name: "comparison",
-  //       template: ["expression1", "==", "expression2"],
-  //       context: "comprisonExpression"
-  //     },
-  //     {
-  //       name: "logical",
-  //       template: ["expression1", "&&", "expression2"],
-  //       context: "logicalExpression"
-  //     }],
-  //   comprisonExpression: [
-  //     {
-  //       name: "var1",
-  //       template: ["var1"],
-  //       context: "variable"
-  //     },
-  //     {
-  //       name: "var2",
-  //       template: ["var2"],
-  //       context: "variable"
-  //     },
-  //     {
-  //       name: "var3",
-  //       template: ["var3"],
-  //       context: "variable"
-  //     },
-  //     {
-  //       name: "arithmatic",
-  //       template: ["expression1", ">", "expression2"],
-  //       context: "arithmaticExpression"
-  //     },
-  //     {
-  //       name: "string template",
-  //       template: ["string  `", "expression", "`"],
-  //       context: "stringTemplate"
-  //     }
-  //   ],
-  //   logicalExpression: [
-  //     {
-  //       name: "var1",
-  //       template: ["var1"],
-  //       context: "variable"
-  //     },
-  //     {
-  //       name: "arithmatic",
-  //       template: ["expression1", ">", "expression2"],
-  //       context: "arithmaticExpression"
-  //     },
-  //     {
-  //       name: "string template",
-  //       template: ["string  `", "expression", "`"],
-  //       context: "stringTemplate"
-  //     }
-  //   ],
-  //   stringTemplate: [
-  //     {
-  //       name: "string template",
-  //       template: ["string  `", "expression", "`"],
-  //       context: "stringTemplate"
-  //     }
-  //   ]
-  // };
-
-  // const [expressionTemplate, setExpressionTemplate] = useState({
-  //   template: ["expression"],
-  //   expressionContext: ""
-  // });
-
-  // const [expressions, setExpressions] = useState({
-  //   parentExpressions: [],
-  //   activeExpression: ""
-  // });
-
-  // const onClickSuggestion = (template: any, context: any) => {
-  //   setExpressionTemplate({
-  //     template: template,
-  //     expressionContext: context
-  //   });
-  // };
-
-  // console.log(expressions.parentExpressions);
+  const [selectedExpressionType, setSelectedExpressionType] = useState(ifElseExpression)
 
   return (
     <div className="App-leftPane">
@@ -174,22 +119,14 @@ function StatementPane(props: { exprItem: ExpressionType, onClick: (tree: Expres
   );
 }
 
-function ExpressionTemplate(props: { exprItem: ExpressionType, onClick: (tree: ExpressionType) => void }) {
-  // const data = props.expressionTemplate.template
+function ExpressionTemplate(props: { exprItem: ExpressionType, onClick: any}) {
   const { exprItem, onClick } = props;
-  // const onClickExpression = (parentExpression: any, name: any) => {
-  //   props.expressionHandler({
-  //     parentExpressions: [...props.expressions.parentExpressions, parentExpression],
-  //     activeExpression: name
-  //   });
-  // };
-  // console.log(data);
 
   return (
     <div className="App-statement-template-editor">
       <div className="App-expression-block-disabled">if</div>
       {exprItem.template.map(templateItem => (
-        <button className="button1 App-expression-component">{templateItem}</button>
+        <button className="button1 App-expression-component" onClick={() => onClick(exprItem)}>{templateItem}</button>
       ))}
 
     </div>
