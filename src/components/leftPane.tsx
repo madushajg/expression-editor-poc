@@ -8,7 +8,7 @@ interface ExpressionType {
   parent?: ExpressionType,
   template: string[]
   supportedExprs: ExpressionType[],
-  // recursive?: boolean
+  recursive?: boolean
 }
 
 // interface BallerinaTypes {
@@ -19,7 +19,8 @@ interface ExpressionType {
 const conditionalExpr: ExpressionType = {
   kind: "ConditionalExpression",
   template: ["expression", "?", "expression", ":", "expression"], // conditional expr has two templates
-  supportedExprs: [] // suggestions, in Ui we show the vars and functions
+  supportedExprs: [], // suggestions, in Ui we show the vars and functions
+  recursive:false
 }
 // enum ComparisonOperatorTypes {
 //     GREATER_THAN = ">",
@@ -34,20 +35,22 @@ const conditionalExpr: ExpressionType = {
 const comparisonExpr: ExpressionType = {
   kind: "comparisonExpression",
   template: ["expression", "operator", "expression"], // how can we manage the operators
-  supportedExprs: [conditionalExpr]
+  supportedExprs: [conditionalExpr],
+  recursive:true,
 }
 
 const logicalExpr: ExpressionType = {
   kind: "logicalExpression",
   template: ["expression", "operator", "expression"],
   supportedExprs: [comparisonExpr],
+  recursive:true,
 }
 
 const ifElseExprType: ExpressionType = {
   kind: "ifElseExpression",
   template: ["expression"],
   supportedExprs: [comparisonExpr, logicalExpr],
-  // recursive:true,
+  recursive:false,
 }
 
 export function LeftPane() {
@@ -156,7 +159,10 @@ export function LeftPane() {
         <StatementPane exprItem={selectedExpressionType} onClick={setSelectedExpressionType} />
         <div className="App-context-sensitivePane">
         <h2 style={{ color: "green" }}>Suggestions</h2>
-        {selectedExpressionType.supportedExprs.map(expression => (
+        {selectedExpressionType.recursive ?  <button onClick={() => setSelectedExpressionType(selectedExpressionType)}>{selectedExpressionType.kind}</button> : null}
+        {
+        selectedExpressionType.supportedExprs.map(expression => (
+         
             <button onClick={() => setSelectedExpressionType(expression)}>{expression.kind}</button>
           ))}
       </div>
